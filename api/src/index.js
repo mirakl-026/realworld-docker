@@ -1,24 +1,47 @@
 const express = require("express");
 const app = express();
-const {connectDb} = require("./helpers/db");
-const { host, port, db } = require("./settings")
+const { host, port, db } = require("./settings");
+const  mongoose = require("mongoose");
 
-console.log("PORT:", port);
+// модель поста
+const postSchema = new mongoose.Schema({
+    name: String
+});
+
+const Post = mongoose.model("Post", postSchema);
+
 
 app.get('/test', (req, res) => {
     res.send("our api is working");
 });
 
 
-const startServer = () => {
-    app.listen(port, () => {
+async function startServer () {
+    mongoose.connect(db, {
+        // useNewUrlParser: true,
+        // useFindAndModify: false
+    });
+
+
+    app.listen(port, async () => {
         console.log(`Started api service on port ${port}`);
         console.log(`on host: ${host}`);
         console.log(`db: ${db}`);
     });
 }
 
-connectDb()
-    .on("error", console.log)
-    .on("disconnected", connectDb)
-    .once("open", startServer);
+async function logPost () {
+    const somePost = await Post.findOne({});
+    if (somePost) {
+        console.log(somePost);
+    } else {
+        const post = new Post({
+            name: "something..."
+        });
+        await post.save();
+        console.log("post created...");
+    }
+}
+
+startServer();
+logPost();
