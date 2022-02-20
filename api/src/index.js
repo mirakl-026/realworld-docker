@@ -32,6 +32,12 @@ app.get("/testWithCurrentUser", async (req, res) => {
     }
 });
 
+app.get("/api/someApiData", (req, res) => {
+    res.json({
+        some_data: "lol kek cheburek"
+    })
+});
+
 
 async function startServer () {
     mongoose.connect(db, {
