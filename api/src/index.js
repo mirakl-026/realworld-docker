@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
-const { host, port, db } = require("./settings");
+const { host, port, db, auth_api_url } = require("./settings");
 const  mongoose = require("mongoose");
+const axios = require("axios").default;
 
 // модель поста
 const postSchema = new mongoose.Schema({
@@ -13,6 +14,22 @@ const Post = mongoose.model("Post", postSchema);
 
 app.get('/test', (req, res) => {
     res.send("our api is working!!");
+});
+
+app.get("/testWithCurrentUser", async (req, res) => {
+    // console.log(auth_api_url);
+    const authResp = await axios.get(auth_api_url + '/currentUser');
+    const user = authResp.data;
+    if (user) {
+        res.json({
+            testWithCurrentUser: true,
+            user
+        });
+    } else {
+        res.json({
+            testWithCurrentUser: false
+        });
+    }
 });
 
 
