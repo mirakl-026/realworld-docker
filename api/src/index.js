@@ -12,7 +12,7 @@ const Post = mongoose.model("Post", postSchema);
 
 
 app.get('/test', (req, res) => {
-    res.send("our api is working");
+    res.send("our api is working!!");
 });
 
 
@@ -24,9 +24,9 @@ async function startServer () {
 
 
     app.listen(port, async () => {
-        console.log(`Started api service on port ${port}`);
-        console.log(`on host: ${host}`);
-        console.log(`db: ${db}`);
+        console.log(`- started api service on port: ${port}`);
+        console.log(`- on host: ${host}`);
+        console.log(`- db: ${db}`);
     });
 }
 
