@@ -8,6 +8,6 @@ RUN npm install
 
 COPY . .
 
-# EXPOSE 3000 - могло быть так...
+RUN npm run build
 
-# CMD ["node", "run test"] - ...но лучше управлять в docker-compose.yml
+RUN npm install -g serve
