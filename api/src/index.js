@@ -11,15 +11,17 @@ const postSchema = new mongoose.Schema({
 
 const Post = mongoose.model("Post", postSchema);
 
-
+// api/test
 app.get('/test', (req, res) => {
     res.send("our api is working!!");
 });
 
+// api/testWithCurrentUser
 app.get("/testWithCurrentUser", async (req, res) => {
-    // console.log(auth_api_url);
+    console.log(auth_api_url + '/currentUser');
     const authResp = await axios.get(auth_api_url + '/currentUser');
     const user = authResp.data;
+    //const user = {};
     if (user) {
         res.json({
             testWithCurrentUser: true,
@@ -32,7 +34,8 @@ app.get("/testWithCurrentUser", async (req, res) => {
     }
 });
 
-app.get("/api/someApiData", (req, res) => {
+// api/someApiData
+app.get("/someApiData", (req, res) => {
     res.json({
         some_data: "lol kek cheburek"
     })
