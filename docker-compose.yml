@@ -3,6 +3,7 @@ version: '3'
 services:
   api:
     build: ./api
+    container_name: rwd-api
     command: npm run start
     restart: unless-stopped
     ports:
@@ -14,13 +15,35 @@ services:
     depends_on:
       - api_db
   
+  auth:
+    build: ./auth
+    container_name: rwd-auth
+    command: npm run start
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - HOST=http://realworld-docker.com
+      - MONGO_URL=mongodb://auth_db:27017/rwd_auth
+    depends_on:
+      - auth_db
+
   api_db:
     image: mongo:latest
+    container_name: rwd-api-db
     volumes:
       - mongodb_api:/data/db
 
+  auth_db:
+    image: mongo:latest
+    container_name: rwd-auth-db
+    volumes:
+      - mongodb_auth:/data/db
+
 volumes:
   mongodb_api:
+  mongodb_auth:
 
 
   
